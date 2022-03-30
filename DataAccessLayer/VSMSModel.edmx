@@ -1,0 +1,460 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VSMSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BillInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ServiceRefNo" Type="int" />
+          <Property Name="ItemId" Type="int" />
+          <Property Name="Price" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="Qty" Type="numeric" Precision="10" Scale="2" />
+          <Property Name="ItemAmount" Type="numeric" Precision="21" Scale="4" StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="CustomerMaster">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="States" Type="nvarchar" MaxLength="50" />
+          <Property Name="City" Type="nvarchar" MaxLength="50" />
+          <Property Name="ContactNo" Type="numeric" Precision="10" Scale="0" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ItemsInfo">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="int" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mrp" Type="numeric" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="ServiceRecordInfo">
+          <Key>
+            <PropertyRef Name="ServiceRefNo" />
+          </Key>
+          <Property Name="ServiceRefNo" Type="int" Nullable="false" />
+          <Property Name="CustId" Type="int" />
+          <Property Name="ModelNo" Type="int" />
+          <Property Name="ServiceDate" Type="datetime" />
+          <Property Name="NextServiceDate" Type="datetime" />
+          <Property Name="ServiceRepId" Type="int" />
+        </EntityType>
+        <EntityType Name="ServiceRepInfo">
+          <Key>
+            <PropertyRef Name="ServiceRepId" />
+          </Key>
+          <Property Name="ServiceRepId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ConatactNo" Type="numeric" Precision="10" Scale="0" />
+        </EntityType>
+        <EntityType Name="VehicleMaster">
+          <Key>
+            <PropertyRef Name="ModelNo" />
+          </Key>
+          <Property Name="ModelNo" Type="int" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
+          <Property Name="ModelYear" Type="int" />
+          <Property Name="VehicleType" Type="nvarchar" MaxLength="50" />
+          <Property Name="SoldDate" Type="datetime" />
+          <Property Name="ServiceSchedule" Type="int" />
+          <Property Name="CustId" Type="int" />
+        </EntityType>
+        <Association Name="FK__BillInfo__ItemId__4D94879B">
+          <End Role="ItemsInfo" Type="Self.ItemsInfo" Multiplicity="0..1" />
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemsInfo">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BillInfo__Servic__4CA06362">
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="0..1" />
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRecordInfo">
+              <PropertyRef Name="ServiceRefNo" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ServiceRefNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__CustI__4316F928">
+          <End Role="CustomerMaster" Type="Self.CustomerMaster" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerMaster">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__Model__440B1D61">
+          <End Role="VehicleMaster" Type="Self.VehicleMaster" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMaster">
+              <PropertyRef Name="ModelNo" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="ModelNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__Servi__44FF419A">
+          <End Role="ServiceRepInfo" Type="Self.ServiceRepInfo" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRepInfo">
+              <PropertyRef Name="ServiceRepId" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="ServiceRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VehicleMa__CustI__3A81B327">
+          <End Role="CustomerMaster" Type="Self.CustomerMaster" Multiplicity="0..1" />
+          <End Role="VehicleMaster" Type="Self.VehicleMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerMaster">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="VehicleMaster">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VSMSModelStoreContainer">
+          <EntitySet Name="BillInfo" EntityType="Self.BillInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerMaster" EntityType="Self.CustomerMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ItemsInfo" EntityType="Self.ItemsInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRecordInfo" EntityType="Self.ServiceRecordInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceRepInfo" EntityType="Self.ServiceRepInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleMaster" EntityType="Self.VehicleMaster" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__BillInfo__ItemId__4D94879B" Association="Self.FK__BillInfo__ItemId__4D94879B">
+            <End Role="ItemsInfo" EntitySet="ItemsInfo" />
+            <End Role="BillInfo" EntitySet="BillInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BillInfo__Servic__4CA06362" Association="Self.FK__BillInfo__Servic__4CA06362">
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfo" />
+            <End Role="BillInfo" EntitySet="BillInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__CustI__4316F928" Association="Self.FK__ServiceRe__CustI__4316F928">
+            <End Role="CustomerMaster" EntitySet="CustomerMaster" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__Model__440B1D61" Association="Self.FK__ServiceRe__Model__440B1D61">
+            <End Role="VehicleMaster" EntitySet="VehicleMaster" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__Servi__44FF419A" Association="Self.FK__ServiceRe__Servi__44FF419A">
+            <End Role="ServiceRepInfo" EntitySet="ServiceRepInfo" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VehicleMa__CustI__3A81B327" Association="Self.FK__VehicleMa__CustI__3A81B327">
+            <End Role="CustomerMaster" EntitySet="CustomerMaster" />
+            <End Role="VehicleMaster" EntitySet="VehicleMaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VSMSModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BillInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ServiceRefNo" Type="Int32" />
+          <Property Name="ItemId" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Qty" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="ItemAmount" Type="Decimal" Precision="21" Scale="4" annotation:StoreGeneratedPattern="Computed" />
+          <NavigationProperty Name="ItemsInfo" Relationship="Self.FK__BillInfo__ItemId__4D94879B" FromRole="BillInfo" ToRole="ItemsInfo" />
+          <NavigationProperty Name="ServiceRecordInfo" Relationship="Self.FK__BillInfo__Servic__4CA06362" FromRole="BillInfo" ToRole="ServiceRecordInfo" />
+        </EntityType>
+        <EntityType Name="CustomerMaster">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="States" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ContactNo" Type="Decimal" Precision="10" Scale="0" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ServiceRecordInfoes" Relationship="Self.FK__ServiceRe__CustI__4316F928" FromRole="CustomerMaster" ToRole="ServiceRecordInfo" />
+          <NavigationProperty Name="VehicleMasters" Relationship="Self.FK__VehicleMa__CustI__3A81B327" FromRole="CustomerMaster" ToRole="VehicleMaster" />
+        </EntityType>
+        <EntityType Name="ItemsInfo">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Int32" Nullable="false" />
+          <Property Name="ItemName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mrp" Type="Decimal" Precision="10" Scale="2" />
+          <NavigationProperty Name="BillInfoes" Relationship="Self.FK__BillInfo__ItemId__4D94879B" FromRole="ItemsInfo" ToRole="BillInfo" />
+        </EntityType>
+        <EntityType Name="ServiceRecordInfo">
+          <Key>
+            <PropertyRef Name="ServiceRefNo" />
+          </Key>
+          <Property Name="ServiceRefNo" Type="Int32" Nullable="false" />
+          <Property Name="CustId" Type="Int32" />
+          <Property Name="ModelNo" Type="Int32" />
+          <Property Name="ServiceDate" Type="DateTime" Precision="3" />
+          <Property Name="NextServiceDate" Type="DateTime" Precision="3" />
+          <Property Name="ServiceRepId" Type="Int32" />
+          <NavigationProperty Name="BillInfoes" Relationship="Self.FK__BillInfo__Servic__4CA06362" FromRole="ServiceRecordInfo" ToRole="BillInfo" />
+          <NavigationProperty Name="CustomerMaster" Relationship="Self.FK__ServiceRe__CustI__4316F928" FromRole="ServiceRecordInfo" ToRole="CustomerMaster" />
+          <NavigationProperty Name="VehicleMaster" Relationship="Self.FK__ServiceRe__Model__440B1D61" FromRole="ServiceRecordInfo" ToRole="VehicleMaster" />
+          <NavigationProperty Name="ServiceRepInfo" Relationship="Self.FK__ServiceRe__Servi__44FF419A" FromRole="ServiceRecordInfo" ToRole="ServiceRepInfo" />
+        </EntityType>
+        <EntityType Name="ServiceRepInfo">
+          <Key>
+            <PropertyRef Name="ServiceRepId" />
+          </Key>
+          <Property Name="ServiceRepId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ConatactNo" Type="Decimal" Precision="10" Scale="0" />
+          <NavigationProperty Name="ServiceRecordInfoes" Relationship="Self.FK__ServiceRe__Servi__44FF419A" FromRole="ServiceRepInfo" ToRole="ServiceRecordInfo" />
+        </EntityType>
+        <EntityType Name="VehicleMaster">
+          <Key>
+            <PropertyRef Name="ModelNo" />
+          </Key>
+          <Property Name="ModelNo" Type="Int32" Nullable="false" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="ModelYear" Type="Int32" />
+          <Property Name="VehicleType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="SoldDate" Type="DateTime" Precision="3" />
+          <Property Name="ServiceSchedule" Type="Int32" />
+          <Property Name="CustId" Type="Int32" />
+          <NavigationProperty Name="CustomerMaster" Relationship="Self.FK__VehicleMa__CustI__3A81B327" FromRole="VehicleMaster" ToRole="CustomerMaster" />
+          <NavigationProperty Name="ServiceRecordInfoes" Relationship="Self.FK__ServiceRe__Model__440B1D61" FromRole="VehicleMaster" ToRole="ServiceRecordInfo" />
+        </EntityType>
+        <Association Name="FK__BillInfo__ItemId__4D94879B">
+          <End Role="ItemsInfo" Type="Self.ItemsInfo" Multiplicity="0..1" />
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ItemsInfo">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__BillInfo__Servic__4CA06362">
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="0..1" />
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRecordInfo">
+              <PropertyRef Name="ServiceRefNo" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ServiceRefNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__CustI__4316F928">
+          <End Role="CustomerMaster" Type="Self.CustomerMaster" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerMaster">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__VehicleMa__CustI__3A81B327">
+          <End Role="CustomerMaster" Type="Self.CustomerMaster" Multiplicity="0..1" />
+          <End Role="VehicleMaster" Type="Self.VehicleMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerMaster">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="VehicleMaster">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__Model__440B1D61">
+          <End Role="VehicleMaster" Type="Self.VehicleMaster" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleMaster">
+              <PropertyRef Name="ModelNo" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="ModelNo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ServiceRe__Servi__44FF419A">
+          <End Role="ServiceRepInfo" Type="Self.ServiceRepInfo" Multiplicity="0..1" />
+          <End Role="ServiceRecordInfo" Type="Self.ServiceRecordInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceRepInfo">
+              <PropertyRef Name="ServiceRepId" />
+            </Principal>
+            <Dependent Role="ServiceRecordInfo">
+              <PropertyRef Name="ServiceRepId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VSMSEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BillInfoes" EntityType="Self.BillInfo" />
+          <EntitySet Name="CustomerMasters" EntityType="Self.CustomerMaster" />
+          <EntitySet Name="ItemsInfoes" EntityType="Self.ItemsInfo" />
+          <EntitySet Name="ServiceRecordInfoes" EntityType="Self.ServiceRecordInfo" />
+          <EntitySet Name="ServiceRepInfoes" EntityType="Self.ServiceRepInfo" />
+          <EntitySet Name="VehicleMasters" EntityType="Self.VehicleMaster" />
+          <AssociationSet Name="FK__BillInfo__ItemId__4D94879B" Association="Self.FK__BillInfo__ItemId__4D94879B">
+            <End Role="ItemsInfo" EntitySet="ItemsInfoes" />
+            <End Role="BillInfo" EntitySet="BillInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__BillInfo__Servic__4CA06362" Association="Self.FK__BillInfo__Servic__4CA06362">
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfoes" />
+            <End Role="BillInfo" EntitySet="BillInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__CustI__4316F928" Association="Self.FK__ServiceRe__CustI__4316F928">
+            <End Role="CustomerMaster" EntitySet="CustomerMasters" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__VehicleMa__CustI__3A81B327" Association="Self.FK__VehicleMa__CustI__3A81B327">
+            <End Role="CustomerMaster" EntitySet="CustomerMasters" />
+            <End Role="VehicleMaster" EntitySet="VehicleMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__Model__440B1D61" Association="Self.FK__ServiceRe__Model__440B1D61">
+            <End Role="VehicleMaster" EntitySet="VehicleMasters" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ServiceRe__Servi__44FF419A" Association="Self.FK__ServiceRe__Servi__44FF419A">
+            <End Role="ServiceRepInfo" EntitySet="ServiceRepInfoes" />
+            <End Role="ServiceRecordInfo" EntitySet="ServiceRecordInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VSMSModelStoreContainer" CdmEntityContainer="VSMSEntities">
+          <EntitySetMapping Name="BillInfoes">
+            <EntityTypeMapping TypeName="VSMSModel.BillInfo">
+              <MappingFragment StoreEntitySet="BillInfo">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ServiceRefNo" ColumnName="ServiceRefNo" />
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Qty" ColumnName="Qty" />
+                <ScalarProperty Name="ItemAmount" ColumnName="ItemAmount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerMasters">
+            <EntityTypeMapping TypeName="VSMSModel.CustomerMaster">
+              <MappingFragment StoreEntitySet="CustomerMaster">
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="States" ColumnName="States" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="ContactNo" ColumnName="ContactNo" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ItemsInfoes">
+            <EntityTypeMapping TypeName="VSMSModel.ItemsInfo">
+              <MappingFragment StoreEntitySet="ItemsInfo">
+                <ScalarProperty Name="ItemId" ColumnName="ItemId" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="Mrp" ColumnName="Mrp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceRecordInfoes">
+            <EntityTypeMapping TypeName="VSMSModel.ServiceRecordInfo">
+              <MappingFragment StoreEntitySet="ServiceRecordInfo">
+                <ScalarProperty Name="ServiceRefNo" ColumnName="ServiceRefNo" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="ModelNo" ColumnName="ModelNo" />
+                <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
+                <ScalarProperty Name="NextServiceDate" ColumnName="NextServiceDate" />
+                <ScalarProperty Name="ServiceRepId" ColumnName="ServiceRepId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceRepInfoes">
+            <EntityTypeMapping TypeName="VSMSModel.ServiceRepInfo">
+              <MappingFragment StoreEntitySet="ServiceRepInfo">
+                <ScalarProperty Name="ServiceRepId" ColumnName="ServiceRepId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="ConatactNo" ColumnName="ConatactNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleMasters">
+            <EntityTypeMapping TypeName="VSMSModel.VehicleMaster">
+              <MappingFragment StoreEntitySet="VehicleMaster">
+                <ScalarProperty Name="ModelNo" ColumnName="ModelNo" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ModelYear" ColumnName="ModelYear" />
+                <ScalarProperty Name="VehicleType" ColumnName="VehicleType" />
+                <ScalarProperty Name="SoldDate" ColumnName="SoldDate" />
+                <ScalarProperty Name="ServiceSchedule" ColumnName="ServiceSchedule" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

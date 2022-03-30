@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DataAccessLayer.ServiceRepInfo>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllServiceRep</title>
+</head>
+<body>
+    <h3>List Of ServiceRepInfo</h3>
+    <div>
+        <table>
+            @foreach (var serviceRep in Model)
+            {
+                <tr>
+                    <td>@serviceRep.ServiceRepId</td>
+                    <td>@serviceRep.FirstName</td>
+                    <td>@serviceRep.LastName</td>
+                    <td>@serviceRep.ConatactNo</td>
+                 
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

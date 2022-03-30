@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataAccessLayer.ServiceRecordInfo>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllServiceRecords</title>
+</head>
+<body>
+    <h3>List Of ServiceRecordsInfo</h3>
+    <div>
+        <table>
+            @foreach (var serviceRec in Model)
+            {
+            <tr>
+                <td>@serviceRec.ServiceRepInfo</td>
+                <td>@serviceRec.CustId</td>
+                <td>@serviceRec.ModelNo</td>
+                <td>@serviceRec.ServiceDate</td>
+                <td>@serviceRec.NextServiceDate</td>
+                <td>@serviceRec.ServiceRepId</td>
+                <td>@serviceRec.ServiceRepInfo/td>
+
+            </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<DataAccessLayer.ItemsInfo>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllItems</title>
+</head>
+<body>
+    <h3>List Of Items</h3>
+    <div>
+        <table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ItemId</td>
+                    <td>@item.ItemName</td>
+                    <td>@item.Mrp</td>
+
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

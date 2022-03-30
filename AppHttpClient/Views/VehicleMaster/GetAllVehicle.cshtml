@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataAccessLayer.VehicleMaster>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllVehicle</title>
+</head>
+<body>
+    <h3>List Of Vehicle</h3>
+    <div>
+        <table>
+            @foreach (var vehi in Model)
+            {
+                <tr>
+                    <td>@vehi.ModelNo</td>
+                    <td>@vehi.ModelName</td>
+                    <td>@vehi.ModelYear</td>
+                    <td>@vehi.VehicleType</td>
+                    <td>@vehi.SoldDate</td>
+                    <td>@vehi.ServiceSchedule</td>
+                    <td>@vehi.CustId</td>
+                    
+                </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

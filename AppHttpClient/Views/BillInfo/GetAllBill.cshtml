@@ -1,0 +1,34 @@
+﻿@model IEnumerable<DataAccessLayer.BillInfo>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllBill</title>
+</head>
+<body>
+    <h3>List Of Bills</h3>
+    <div>
+        <table>
+            @foreach (var bill in Model)
+            {
+            <tr>
+                <td>@bill.Id</td>
+                <td>@bill.ServiceRefNo</td>
+                <td>@bill.ServiceRecordInfo</td>
+                <td>@bill.ItemId</td>
+                <td>@bill.ItemsInfo</td>
+                <td>@bill.Price</td>
+                <td>@bill.Qty</td>
+                <td>@bill.ItemAmount</td>
+
+            </tr>
+            }
+        </table>
+    </div>
+</body>
+</html>

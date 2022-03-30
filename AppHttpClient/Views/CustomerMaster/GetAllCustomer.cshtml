@@ -1,0 +1,33 @@
+﻿@model IEnumerable<DataAccessLayer.CustomerMaster>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetAllCustomer</title>
+</head>
+<body>
+    <h3>List Of Customer</h3>
+    <div>
+    <table>
+        @foreach(var cust in Model)
+            {
+        <tr>
+            <td>@cust.CustId</td>
+            <td>@cust.FirstName</td>
+            <td>@cust.LastName</td>
+            <td>@cust.City</td>
+            <td>@cust.States</td>
+            <td>@cust.ContactNo</td>
+            <td>@cust.Country</td>
+            <td>@cust.Email</td>
+        </tr>
+            }
+    </table>
+    </div>
+</body>
+</html>
